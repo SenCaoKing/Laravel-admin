@@ -11,6 +11,23 @@
 |
 */
 
+use App\Models\Article;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('search', function () {
+    // 为查看方便都转成数组
+    dump(Article::all()->toArray());
+    dump(Article::search('功能齐全的搜索引擎')->get()->toArray());
+    dump('此处把content改为：让全文索引变的简单而强大');
+    // 修改 content 测试索引是否会自动同步
+    $first = Article::find(1);
+    $first->content = '让全文检索变的简单而强大';
+    $first->save();
+    dump('下面搜索的是：功能齐全的搜索引擎');
+    dump(Article::search('功能齐全的搜索引擎')->get()->toArray());
+    dump('下面搜索的是：简单的检索');
+    dump(Article::search('简单的检索')->get()->toArray());
 });
